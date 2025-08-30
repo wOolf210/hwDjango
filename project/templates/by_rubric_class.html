@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{current_rubric.name}}</title>
+</head>
+<body>
+
+{% for rubric in rubrics %}
+
+{{ rubric.name }}
+
+{% endfor %}
+
+<hr>
+<h1>{{current_rubric.name}}</h1>
+{% for bb in bbs %}
+
+<p>{{bb.title}} - {{bb.content}}</p>
+<p>{{bb.price}} - {{bb.published}}</p>
+
+{% endfor %}
+
+
+
+</body>
+</html>

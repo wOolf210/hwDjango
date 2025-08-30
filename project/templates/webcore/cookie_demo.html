@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cookie страница
+{% endblock %}
+
+{% block content %}
+
+
+<h1> Cookies </h1>
+{{ raw_cookies }}
+
+  <a href="{% url 'cookie_set' %}">Dark Theme</a>
+  <a href="{% url 'cookie_delete' %}">Delete Theme</a>
+  <a href="{% url 'cookie_set_signed' %}">Signed Cookie</a>
+
+{% endblock %}
+

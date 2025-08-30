@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Message страница
+{% endblock %}
+
+{% block content %}
+
+
+<h1> Message </h1>
+
+
+<a href="{%url 'message_success' %}">success</a>
+<a href="{%url 'message_error' %}">error</a>
+<a href="{%url 'message_custom' %}">custom</a>
+
+
+<h3>Цикл сообщений</h3>
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message.level }} / {{ message.message }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Нет сообщений</p>
+{% endif %}
+
+{% endblock %}
+

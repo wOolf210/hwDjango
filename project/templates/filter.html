@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Filter</title>
+</head>
+{% load filters_tags %}
+
+<body>
+<p>Цена: {{99887.6766647476674|currency:"USD"}}</p>
+<p>Обратная строка: {{"Django"|reverse_str}}</p>
+{% join_with " | " "apple" "orange" "banana" "mango" as fruits %}
+<p>Фрукты: {{fruits}}</p>
+<p>{% show_time %}</p>
+{% bullet "C++" "Python" "Java" %}
+
+<p>{{"python"|slice_v2}}</p>
+<p>{{"+7(778)642-12-13"|change_digit}}</p>
+
+<div class="max-w-2xl mx-auto p-6 bg-gray-400 rounded-lg shadow">
+    <h1 class="text-3xl font-semibold mb-4">Привет, это Tailwind!</h1>
+    <p class="text-gray-700">Это пример кода написанный на Tailwind</p>
+    <a href="#" class="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded">Кнопка</a>
+</div>
+
+
+
+
+
+</body>
+</html>

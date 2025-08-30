@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .color1{
+            color: red;
+        }
+        .color2{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+{% with bb_count=bbs.count %}
+
+{% if bb_count > 0 %}
+<p>Всего {{bb_count}} постов.</p>
+{% endif %}
+
+{% endwith %}
+
+{% verbatim %}
+<p>Текущая дата выводится тэгом {% now %}</p>
+{% endverbatim %}
+
+{% autoescape on %}
+<h1>{{ html_code }}</h1>
+{% endautoescape %}
+
+{% comment 'Доделать завтра!' %}
+<h1>Тут будут посты</h1>
+{% endcomment %}
+
+{% for b in bbs %}
+{% ifchanged b.rubric %}
+<h1>{{b.title}} - {{b.rubric}}</h1>
+<p>{{b.price}}</p>
+{% endifchanged %}
+{% endfor %}
+
+
+
+{% for b in bbs %}
+{% cycle 'color1' 'color2' as classcolor %}
+<h1 class="{{classcolor}}">{{b.title}} - {{b.rubric}}</h1>
+<p>{{b.price}}</p>
+{% endfor %}
+
+{% firstof email phone 'Не пишите или не звоните сюда' %}
+{% now 'SHORT_DATETIME_FORMAT' %}
+{% regroup bbs by rubric.name as grouped_bbs %}
+{% for rubric_name, gbbs in grouped_bbs %}
+    <h3>{{rubric_name}}</h3>
+    {% for bb in gbbs %}
+        <p>{{bb.title}} - {{bb.price}} - {{bb.published|date:"d.m.Y H:i"}}</p>
+            <p>{{bb.published|date:"DATETIME_FORMAT"}}</p>
+            <p>{{bb.published|time:'H:i'}}</p>
+            <p>{{bb.published|time:"TIME_FORMAT"}}</p>
+                <p>{{bb.published|time}}</p>
+
+            {% filter upper %}
+                <h6>test data</h6>
+            {% endfilter %}
+    {% endfor %}
+{% endfor %}
+
+{{ phone|default:"Нет номера" }}
+{{True|yesno}} ,{{False|yesno}} {{None|yesno}}
+<br>
+{{True|yesno:'так точно, никак нет, дело темное'}}
+{{False|yesno:'так точно, никак нет, дело темное'}}
+{{None|yesno:'так точно, никак нет, дело темное'}}
+<br>
+{{ 'Python'|cut:'yth' }}
+<br>
+{{ 'Python'|length}}
+<br>
+{{ 'Python'|random }}
+
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Множественная загрузка{% endblock %}
+{% block content %}
+<h1>Загрузить несколько документов</h1>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">Загрузить все</button>
+</form>
+<p style="margin-top:12px;color:#666">Поддерживаются: .pdf, .docx, .txt</p>
+{% endblock %}

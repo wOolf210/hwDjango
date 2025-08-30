@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Документы{% endblock %}
+{% block content %}
+<h1>Документы</h1>
+{% for d in docs %}
+  <div class="card">
+    <div><b>Файл:</b> <a href="{{ d.file.url }}" target="_blank">{{ d.file.name }}</a></div>
+    <div><b>Размер:</b> {{ d.file.size }} байт</div>
+    <div><b>Дата:</b> {{ d.uploaded_at }}</div>
+    <div style="margin-top:8px">
+      <a class="btn" href="{% url 'app:delete_document' d.pk %}">Удалить</a>
+    </div>
+  </div>
+{% empty %}
+  <p>Пока нет файлов.</p>
+{% endfor %}
+{% endblock %}

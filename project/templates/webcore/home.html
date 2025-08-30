@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block content %}
+<div class="nav">
+  <a href="{% url 'cookie_demo' %}">Cookie</a>
+  <a href="{% url 'session_demo' %}">Session</a>
+  <a href="{% url 'message_demo' %}">Message</a>
+  <a href="{% url 'signing_demo' %}">Signing</a>
+
+
+
+
+</div>
+{% endblock %}
+

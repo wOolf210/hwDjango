@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Фотографии{% endblock %}
+{% block content %}
+<h1>Фотографии</h1>
+{% for p in photos %}
+  <div class="card">
+    <div><img src="{{ p.image.url }}" alt="" style="max-width:320px;height:auto;border-radius:8px"/></div>
+    <div><b>Подпись:</b> {{ p.caption|default:"—" }}</div>
+    <div><b>Размеры:</b> {{ p.width }}×{{ p.height }} px</div>
+    <div><b>Дата:</b> {{ p.created_at }}</div>
+    <div style="margin-top:8px">
+      <a class="btn" href="{% url 'app:delete_photo' p.pk %}">Удалить</a>
+    </div>
+  </div>
+{% empty %}
+  <p>Пока нет фотографий.</p>
+{% endfor %}
+{% endblock %}

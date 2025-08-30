@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ bb.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="post-detail-card">
+    <h1 class="post-title">{{ bb.title }}</h1>
+    <h3 class="post-rubric">Рубрика: {{ bb.rubric.name }}</h3>
+    <p class="post-price">Цена: <span>{{ bb.price }} ₽</span></p>
+    <p class="post-content">{{ bb.content }}</p>
+    <p class="post-date">Опубликовано: {{ bb.published|date:"d.m.Y H:i" }}</p>
+
+    <div class="post-actions">
+      <a class="btn btn-update" href="{% url 'app:update_bb' bb.pk %}">Редактировать</a>
+
+      <form action="{% url 'app:delete_bb' bb.pk %}" method="post" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-delete">Удалить</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

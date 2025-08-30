@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Signing страница
+{% endblock %}
+
+{% block content %}
+
+
+<h1> Signing </h1>
+
+
+<a href="{%url 'signing_set' %}">Сгенерировать токен</a>
+<a href="{%url 'signing_set_type' %}">Сгенерировать токен другого типа данных</a>
+
+
+
+{% endblock %}
+

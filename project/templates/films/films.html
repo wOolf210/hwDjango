@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Films</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .film-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .film-title {
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: #333333;
+        }
+        .film-details {
+            font-size: 16px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+
+{% for film in all_films %}
+  <div class="film-card">
+      <h1 class="film-title"><a href="{% url 'films:film-by-slug' film.slug %}"> {{ film.name }}</a></h1>
+      <p class="film-details">{{ film.genre }} &bull; {{ film.author }} &bull; {{ film.year }}</p>
+  </div>
+{% endfor %}
+<a href="{% url 'films:all' %}">Button1</a>
+<a href="{% url 'app:all' %}">Button2</a>
+
+</body>
+</html>

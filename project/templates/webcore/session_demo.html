@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Session страница
+{% endblock %}
+
+{% block content %}
+
+
+<h1> Session </h1>
+{{ session_data }}
+{{ session_key }}
+{{ cookie_age}}
+{{ cookie_date}}
+
+<a href="{%url 'session_counter' %}">Счетчик</a>
+<a href="{%url 'session_set_expiry' %}">Срок жизни 1 час </a>
+<a href="{%url 'session_cycle' %}">Сменить ключ</a>
+<a href="{%url 'session_flush' %}">Очистка</a>
+<a href="{%url 'session_test_cookie' %}">Тест Cookie</a>
+
+
+{% endblock %}
+

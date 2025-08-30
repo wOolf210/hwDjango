@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+Создание поста
+{% endblock %}
+
+{% block content %}
+
+<div class="form-wrapper">
+  <div class="form-card">
+    <h1>Добавить Публикацию</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Отправить" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

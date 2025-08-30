@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Page</title>
+    <style>
+        /* Общие стили страницы */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Стили контейнера формы */
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Список ошибок формы (non-field) */
+        ul.error {
+            list-style: none;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #ffe6e6;
+            border: 1px solid #ff4d4d;
+            border-radius: 4px;
+        }
+
+        ul.error li {
+            color: #b30000;
+        }
+
+        /* Контейнер для каждого поля */
+        form > div {
+            margin-bottom: 18px;
+        }
+
+        /* Метки к полям */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        /* Поля ввода текста, даты, селекты и т.д. */
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select,
+        .django-widget {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #66afe9;
+            outline: none;
+        }
+
+        /* Подсказки (help_text) */
+        small {
+            display: block;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* Список ошибок у конкретного поля */
+        div ul {
+            list-style: none;
+            padding: 5px;
+            margin: 5px 0 0;
+            color: #b30000;
+        }
+
+        /* Кнопка отправки */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<form method="post" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
+    {% csrf_token %}
+
+    <!-- Список ошибок -->
+    {% if form.non_field_errors %}
+        <ul class="error">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Видимые поля формы -->
+    {% for field in form.visible_fields %}
+    <div>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+            <small>{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+            <ul>
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Скрытые поля формы -->
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

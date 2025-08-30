@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load bbcode_tags %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .spoiler {
+          background: #000;
+          color: #000;
+          cursor: pointer;
+          transition: color .2s;
+        }
+        .spoiler.spoiler-open {
+          background: none;
+          color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+
+<p>{{example}}</p>
+
+    <p>
+        {% bbcode example %}
+    </p>
+
+<p>
+    {{post.title}} - {{post.author}}
+    {{post.body}}
+    {{post.content.rendered}}
+</p>
+</body>
+</html>

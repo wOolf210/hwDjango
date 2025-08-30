@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Paginator Example
+{% endblock %}
+
+{% block content %}
+
+<h1 class="main-title">Посты:</h1>
+
+{% for bb in page_obj %}
+  <div class="post-detail-card">
+    <h2 class="post-title">{{ bb.title }}</h2>
+    <p class="post-content">{{ bb.content }}</p>
+    <p class="post-price">Цена: {{ bb.price }} $</p>
+    <p class="post-date">Дата публикации: {{ bb.published }}</p>
+  </div>
+{% empty %}
+  <p class="no-data">Нет постов для отображения.</p>
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+  <nav class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}&per_page={{ page_obj.paginator.per_page}}">&laquo;</a>
+    {% else %}
+      <span>&laquo;</span>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span>{{ num }}</span>
+      {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+        <a href="?page={{ num }}&per_page={{ page_obj.paginator.per_page }}">{{num}}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}&per_page={{ page_obj.paginator.per_page}}">&raquo;</a>
+    {% else %}
+      <span>&raquo;</span>
+    {% endif %}
+  </nav>
+
+  <p class="pagination-info">
+    Показаны {{ page_obj.start_index }}–{{ page_obj.end_index }} из {{ page_obj.paginator.count }} постов.
+  </p>
+{% endif %}
+
+{% endblock %}

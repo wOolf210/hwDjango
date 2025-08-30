@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Загрузка (ThumbnailerImageField){% endblock %}
+{% block content %}
+<h1>Загрузка (ThumbnailerImageField + превью)</h1>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">Загрузить</button>
+</form>
+{% endblock %}
