@@ -531,12 +531,35 @@ def gallery_list(request):
 from .form import PhotoResizedForm
 from .models import PhotoResized
 
-class UploadResizedPhotoView(View):
-    def get(self, request):
-        return render(request, "files/upload_resized.html", {"form": PhotoResizedForm()})
-    def post(self, request):
-        form = PhotoResizedForm(request.POST, request.FILES)
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from easy_thumbnails.files import get_thumbnailer
+from .form import PhotoResizedForm
+from .models import PhotoResized
+
+def upload_photo_resize(request):
+    if request.method == 'POST':
+        form = PhotoResizedForm(request.POST, request.FILES)  # важно передавать request.FILES
         if form.is_valid():
             form.save()
-            return redirect("app:gallery_list")
-        return render(request, "files/upload_resized.html", {"form": form})
+            return redirect(reverse('app:gallery_resized'))
+    else:
+        form = PhotoResizedForm()
+    return render(request, 'files/upload_resized.html', {'form': form})
+
+def gallery_resized(request):
+    photos = PhotoResized.objects.order_by('-created_at')
+    # Покажем, как сделать миниатюры в Python (без шаблонных тегов)
+    items = []
+    for p in photos:
+        if not p.image:
+            continue
+        thumb = get_thumbnailer(p.image).get_thumbnail({'size': (300, 300), 'crop': 'smart'})
+        items.append({'photo': p, 'thumb_url': thumb.url})
+    return render(request, 'files/gallery_resized.html', {'items': items})
+
+
+
+
+
+

@@ -63,7 +63,9 @@ urlpatterns = [
 
     path("gallery/", gallery_list, name="gallery_list"),
 
-    path("upload/resized/", UploadResizedPhotoView.as_view(), name="upload_resized"),
+    path("upload/resized/", upload_photo_resize, name="upload_photo_resized"),
+    path('gallery/resized', gallery_resized, name='gallery_resized'),
+
 ]
 
 

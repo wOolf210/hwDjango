@@ -330,12 +330,9 @@ class StaticPick(models.Model):
 from easy_thumbnails.fields import ThumbnailerImageField
 
 class PhotoResized(models.Model):
-    picture = ThumbnailerImageField(
-        upload_to="photos_resized/",
-        resize_source={"size": (1280, 1280), "crop": "scale"},  # сохранится уменьшенная копия
-    )
-    caption = models.CharField(max_length=200, blank=True)
+    title = models.CharField(max_length=120, blank=True)
+    image = ThumbnailerImageField(upload_to='photos/%Y/%m/%d',null=True)  # храним оригинал
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.caption or f"Resized #{self.pk}"
+        return self.title or f'Photo #{self.pk}'

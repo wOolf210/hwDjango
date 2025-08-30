@@ -1,22 +1,17 @@
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 from django.core.paginator import Paginator
-from django.core.signing import TimestampSigner, dumps, loads
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes, permission_classes
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
-
-from .models import Rubric, Ad
+from rest_framework.response import Response
+from .models import *
 from .permissions import IsReadOnlyOrAuthenticated
-from .serializers import RubricSerializer, AdSerializerGet, AdSerializerPost
+from .serializers import *
 
 
-
-def ads_page(request):
-    return render(request, "webcore/ads.html")
 # Create your views here.
 def home(request):
     return render(request, 'webcore/home.html')
@@ -97,6 +92,11 @@ def message_custom(request):
     return redirect('message_demo')
 
 
+
+def message_notice(request):
+    messages.add_message(request, 40, 'NOTICE!')
+    return redirect('message_demo')
+
 def signing_demo(request):
     return render(request, 'webcore/signing_demo.html')
 
@@ -112,10 +112,32 @@ def signing_pack_payload(request):
     data=loads(signed, salt='api')
     return HttpResponse(f"Signed data: {signed}<br>Unpacked data: {data}")
 
+
+
+
 def cookie_set_signed(request):
     resp=redirect('cookie_demo')
     resp.set_signed_cookie("promo_code","summer2021",salt="hi", max_age=60*60*24*30, httponly=True)
     return resp
+
+
+
+from django.core.signing import dumps, loads
+from django.http import HttpResponse
+
+def signing_list_demo(request):
+    words = ["python", "django", "oop", "inheritance", "polymorphism"]
+
+    signed = dumps(words, salt="words")
+
+    unpacked = loads(signed, salt="words")
+
+    return HttpResponse(f"""
+        <h2>Подпись списка слов</h2>
+        <p><b>Исходный список:</b> {words}</p>
+        <p><b>Подписанный токен:</b><br>{signed}</p>
+        <p><b>Распакованный список:</b> {unpacked}</p>
+    """)
 
 
 from django.http import HttpResponse,JsonResponse
@@ -145,7 +167,7 @@ def send_low_code_email_v1(request):
         subject="Проверка EmailMessage",
         body="Текстовая часть письма",
         from_email=settings.DEFAULT_FROM_EMAIL,
-        to=["dostayeraly8@gmail.com"]
+        to=["EMAIL"]
     )
     email.send(fail_silently=False)
     return JsonResponse({"status":"ok"})
@@ -274,7 +296,7 @@ def verify_token(request,token):
 
 
 # @api_view(["GET"])
-# def rubric_api(request):
+# def rubrics_api(request):
 #     qs=Rubric.objects.order_by("name")
 #     data=RubricSerializer(qs,many=True).data
 #     return Response(data,status=200)
@@ -289,12 +311,11 @@ def verify_token(request,token):
 #     data=RubricSerializer(rubric).data
 #     return Response(data,status=200)
 #
-#
 # @api_view(["GET"])
 # def ads_api(request):
 #     ads=Ad.objects.all().select_related("rubric","seller")
 #     data=AdSerializer(ads,many=True).data
-#     return Response (data,status=200)
+#     return Response(data,status=200)
 #
 # from rest_framework.generics import get_object_or_404
 #
@@ -313,8 +334,6 @@ def verify_token(request,token):
 #     rubric=serializer.save()
 #     return Response(RubricSerializer(rubric).data,status=201)
 
-
-
 @api_view(["GET","POST"])
 # @permission_classes([IsReadOnlyOrAuthenticated])
 def api_rubrics(request):
@@ -330,7 +349,6 @@ def api_rubrics(request):
         rubric=serializer.save()
         return Response(RubricSerializer(rubric).data,status=201)
 
-
 @api_view(["GET","PUT","PATCH","DELETE"])
 def api_rubric_detail(request,pk):
     rubric=get_object_or_404(Rubric,pk=pk)
@@ -338,7 +356,7 @@ def api_rubric_detail(request,pk):
         data=RubricSerializer(rubric).data
         return Response(data,status=200)
 
-    if request.method in ["PUT", "PATCH"]:
+    if request.method in ["PUT","PATCH"]:
         serializer=RubricSerializer(rubric,data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors,status=400)
@@ -348,6 +366,7 @@ def api_rubric_detail(request,pk):
     if request.method == "DELETE":
         rubric.delete()
         return Response(status=204)
+
 
 @api_view(["GET","POST"])
 @parser_classes([JSONParser,FormParser,MultiPartParser])
@@ -366,23 +385,24 @@ def api_ads(request):
         },status=200)
 
     if request.method == "POST":
-        serializer=AdSerializerPost(data=request.data)
+        serializer=AdSerializerPost(data=request.data,context={"request": request})
         if not serializer.is_valid():
             return Response(serializer.errors,status=400)
         ad=serializer.save()
         return Response(AdSerializerPost(ad).data,status=201)
 
 
+
 @api_view(["GET","PUT","PATCH","DELETE"])
-@parser_classes([JSONParser,FormParser,MultiPartParser])
+@parser_classes([JSONParser, FormParser, MultiPartParser])
 def api_ad_detail(request,pk):
-    ad=get_object_or_404(Rubric,pk=pk)
+    ad=get_object_or_404(Ad,pk=pk)
     if request.method == "GET":
         data=AdSerializerGet(ad).data
         return Response(data,status=200)
 
-    if request.method in ["PUT", "PATCH"]:
-        serializer=AdSerializerPost(ad,data=request.data)
+    if request.method in ["PUT","PATCH"]:
+        serializer=AdSerializerPost(ad,data=request.data,context={"request": request})
         if not serializer.is_valid():
             return Response(serializer.errors,status=400)
         ad=serializer.save()
@@ -394,6 +414,9 @@ def api_ad_detail(request,pk):
 
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-
-
+@ensure_csrf_cookie
+def csrf_probe(_):
+    return JsonResponse({"detail": "csrf set"})

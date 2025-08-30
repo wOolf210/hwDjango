@@ -19,6 +19,7 @@ urlpatterns = [
     path('message-demo/', message_demo, name='message_demo'),
     path('message-success/', message_success, name='message_success'),
     path('message-error/', message_error, name='message_error'),
+    path('message-notice/', message_notice, name='message_notice'),
     path('message-custom/', message_custom, name='message_custom'),
 
     path('signing/', signing_demo, name='signing_demo'),
@@ -36,19 +37,14 @@ urlpatterns = [
     path('mail/send/contact/', contact_form),
     path('verify/<str:token>/', verify_token),
 
-    # path('api/rubrics/',rubric_api,name='rubrics_api'),
-    # path('api/rubric/<int:pk>/',rubric_detail,name='rubric_detail'),
-    #
-    # path('api/ads/',ads_api,name='ads_api'),
-    # path('api/ad/<int:pk>/',ad_detail,name='ad_detail'),
-    # path('api/rubric/create/',api_rubric_create,name='api_rubric_create'),
 
+    path('signing/list/', signing_list_demo, name='signing_list_demo'),
 
-    path('api/rubrics/',api_rubrics,name='api_rubrics'),
-    path('api/rubrics/<int:pk>/',api_rubric_detail,name='api_rubric_detail'),
-    path('api/ads/',api_ads,name='api_ads'),
-    path('ads/', ads_page, name='ads_page'),
-
+    path('api/rubrics/',api_rubrics, name='api_rubrics'),
+    path('api/rubrics/<int:pk>/',api_rubric_detail, name='api_rubric_detail'),
+    path('api/ads/',api_ads, name='api_ads'),
+    path('api/ads/<int:pk>/', api_ad_detail, name='api_ad_detail'),
+    path("api/csrf/", csrf_probe)
 ]
 
 

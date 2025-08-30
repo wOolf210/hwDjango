@@ -103,7 +103,5 @@ from .models import PhotoResized
 class PhotoResizedForm(forms.ModelForm):
     class Meta:
         model = PhotoResized
-        fields = ("picture", "caption")
-        widgets = {
-            "picture": ImageClearableFileInput(thumbnail_options={"size": (120, 120), "crop": "scale"}),
-        }
+        fields = ['title', 'image']
+

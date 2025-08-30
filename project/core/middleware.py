@@ -93,3 +93,24 @@ class ExceptionMiddleware:
             }
             return JsonResponse(data, status=500)
         return None
+
+
+from django.http import HttpResponse
+
+class BlockForbiddenWordsMiddleware:
+    FORBIDDEN_WORDS = {"hack", "forbidden", "badword"}
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        path = request.path.lower()
+
+        for word in self.FORBIDDEN_WORDS:
+            if word in path:
+                return HttpResponse(
+                    f"Запрещённое слово в URL: '{word}'",
+                    status=403
+                )
+
+        return self.get_response(request)

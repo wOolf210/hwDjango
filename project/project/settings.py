@@ -70,19 +70,17 @@ JAZZMIN_SETTINGS = {
         "auth.User": "fas fa-user",
         "auth.Group": "fas fa-users",
     },
-    "theme": "darkly",   # варианты: "darkly", "cyborg", "superhero", "solar", "slate"
-    "dark_mode_theme": "darkly",  # используем темный вариант
-    "show_ui_builder": True,  # включить переключатель тем в интерфейсе
 }
 
 THUMBNAIL_ALIASES = {
-    "": {  # глобальные пресеты (для всего проекта)
-        "default": {"size": (180, 240), "crop": "scale"},
-        "big": {"size": (480, 640), "crop": "10,10"},  # 10% смещение
+    '': {
+        'card':   {'size': (300, 300), 'crop': 'smart'},
+        'detail': {'size': (800, 0),   'crop': 'scale'},
     },
-    # "app.Photo": {"default": {"size": (500, 300), "crop": "scale"}},
 }
-THUMBNAIL_DEFAULT_OPTIONS = {"quality": 85}
+THUMBNAIL_DEFAULT_OPTIONS = {
+    'quality': 85,
+}
 TAILWIND_APP_NAME="theme"
 NPM_BIN_PATH=r"C:\Program Files\nodejs\npm.cmd"
 
@@ -103,7 +101,7 @@ MIDDLEWARE = [
     'core.middleware.TimingMiddleware',
     'core.middleware.BlockIpMiddleware',
     'core.middleware.ExceptionMiddleware',
-
+    'core.middleware.BlockForbiddenWordsMiddleware',
 
 ]
 # CACHE_MIDDLEWARE_ALIAS='default'
@@ -288,6 +286,19 @@ SESSION_COOKIE_AGE = 60*60*24*7
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
 
+from django.contrib.messages import constants as message_constants
+
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'debug',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'error',
+    40: 'notice',
+}
+
+
+
 
 EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST="smtp.gmail.com"
@@ -305,18 +316,15 @@ MANAGERS=[("Manager","EMAIL"),]
 EMAIL_SUBJECT_PREFIX = "[Django]"
 
 
-
-
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 5,
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 

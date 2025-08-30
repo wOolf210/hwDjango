@@ -26,7 +26,7 @@ class Ad(models.Model):
     is_published = models.BooleanField(verbose_name="Опубликовано", default=True)
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
-    image = models.ImageField(verbose_name="Изображение", upload_to='ads/', blank=True, null=True)
+    image= models.ImageField(verbose_name="Изображение", upload_to='ads/', blank=True, null=True)
 
     class Meta:
         verbose_name = "Объявление"
