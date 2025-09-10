@@ -3,10 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import *
 from django.urls import reverse, reverse_lazy
 from django.views import View
-
+from .serializers import FilmSerializer
 from .form import *
 from .models import Film
-
+from rest_framework import generics
 
 def get_all_films(request):
     all_films = Film.objects.all()
@@ -114,6 +114,12 @@ def film_create_html(request,mode="quick"):
     return render(request,template,{"form":form})
 
 
+class FilmListCreateApiView(generics.ListCreateAPIView):
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
 
 
-
+class FilmDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
+    lookup_field = "pk"
